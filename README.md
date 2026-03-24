@@ -1,6 +1,6 @@
 # expense_tracker
 
-A new Flutter project.
+An expense tracker app in Flutter. For ITEC-315 Mobile App Design and Development at NYIT
 
 ## Getting Started
 
