@@ -33,8 +33,6 @@ class _NewExpenseState extends State<NewExpense> {
       lastDate: DateTime.now(),
     );
 
-    
-
     final TimeOfDay? selectedTime = await showTimePicker(
       initialTime: TimeOfDay.now(),
       context: context,
@@ -46,7 +44,13 @@ class _NewExpenseState extends State<NewExpense> {
     }
 
     setState(() {
-      selectedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day, selectedTime.hour, selectedTime.minute);
+      selectedDate = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      );
     });
   }
 
@@ -86,17 +90,25 @@ class _NewExpenseState extends State<NewExpense> {
                 : Text(formatter.format(selectedDate!)),
           ),
 
-          ElevatedButton(
-            onPressed: () {
-              print(_titleController.text);
-              print(_amountController.text);
-              print(
-                selectedDate == null
-                    ? "Date is null"
-                    : selectedDate!.toIso8601String(),
-              );
-            },
-            child: Text("Save Expense"),
+          Center(
+            child: Row(
+              children: [
+                ElevatedButton(onPressed: () {}, child: Text("Cancel")),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    print(_titleController.text);
+                    print(_amountController.text);
+                    print(
+                      selectedDate == null
+                          ? "Date is null"
+                          : selectedDate!.toIso8601String(),
+                    );
+                  },
+                  child: Text("Save Expense"),
+                ),
+              ],
+            ),
           ),
         ],
       ),
