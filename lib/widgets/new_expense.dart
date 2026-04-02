@@ -17,16 +17,36 @@ class _NewExpenseState extends State<NewExpense> {
 
   DateTime? selectedDate;
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _amountController.dispose();
+    selectedDate = null;
+    super.dispose();
+  }
+
   Future<void> _selectDate() async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     );
 
+    
+
+    final TimeOfDay? selectedTime = await showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context,
+    );
+
+    if (pickedDate == null || selectedTime == null) {
+      print("date or time is null");
+      return;
+    }
+
     setState(() {
-      selectedDate = pickedDate;
+      selectedDate = DateTime(pickedDate.year, pickedDate.month, pickedDate.day, selectedTime.hour, selectedTime.minute);
     });
   }
 
@@ -52,14 +72,13 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text("Amount"),
             ),
           ),
-          
+
           /*
           TextField(
             maxLength: 50,
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(label: Text("Date")),
           ),*/
-
           OutlinedButton(
             onPressed: _selectDate,
             child: selectedDate == null
@@ -71,7 +90,11 @@ class _NewExpenseState extends State<NewExpense> {
             onPressed: () {
               print(_titleController.text);
               print(_amountController.text);
-              print(selectedDate == null ? "Date is null" : selectedDate!.toIso8601String());
+              print(
+                selectedDate == null
+                    ? "Date is null"
+                    : selectedDate!.toIso8601String(),
+              );
             },
             child: Text("Save Expense"),
           ),
