@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 const uuid = Uuid();
 
-final formatter = DateFormat.yMMMMd();
+final formatter = DateFormat('MMMM d y hh:mm a'); // April 2 2026 11:20 AM
 
 enum Category {food, travel, leisure, work}
 const categoryIcons={
