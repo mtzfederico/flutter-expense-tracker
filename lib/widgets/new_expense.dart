@@ -123,7 +123,7 @@ class _NewExpenseState extends State<NewExpense> {
                     print(_titleController.text);
                     print(_amountController.text);
                     print(
-                      _NewExpenseState() == null
+                      _selectedDate == null
                           ? "Date is null"
                           : _selectedDate!.toIso8601String(),
                     );
