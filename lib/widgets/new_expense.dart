@@ -4,7 +4,8 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.saveExpense});
+  final void Function(Expense expense) saveExpense;
 
   @override
   State<NewExpense> createState() {
@@ -142,11 +143,17 @@ class _NewExpenseState extends State<NewExpense> {
                   onPressed: () {
                     print(_titleController.text);
                     print(_amountController.text);
+                    print(selectedCategory);
                     print(
                       _selectedDate == null
                           ? "Date is null"
                           : _selectedDate!.toIso8601String(),
                     );
+                    if (_selectedDate == null) {
+                      return;
+                    }
+                    widget.saveExpense(Expense(title: _titleController.text, amount: double.parse(_amountController.text), date: _selectedDate!, category: selectedCategory));
+                    Navigator.pop(context);
                   },
                   child: Text("Save Expense"),
                 ),
