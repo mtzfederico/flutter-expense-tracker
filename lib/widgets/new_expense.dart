@@ -11,7 +11,7 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
-  final formatter = DateFormat('MMMM d y hh:mm a');
+  final formatter = DateFormat('MMMM d hh:mm a');
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
 
@@ -67,33 +67,58 @@ class _NewExpenseState extends State<NewExpense> {
             decoration: InputDecoration(label: Text("Title")),
           ),
 
-          TextField(
-            controller: _amountController,
-            maxLength: 10,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              prefixText: '\$',
-              label: Text("Amount"),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  maxLength: 10,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    prefixText: '\$',
+                    label: Text("Amount"),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      selectedDate == null
+                          ? 'Select Date'
+                          : formatter.format(selectedDate!),
+                    ),
+                    IconButton(
+                      onPressed: _selectDate,
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+
+                    /*
+                    OutlinedButton(
+                      onPressed: _selectDate,
+                      child: selectedDate == null
+                          ? const Text('Select Date')
+                          : Text(formatter.format(selectedDate!)),
+                    ),*/
+                  ],
+                ),
+              ),
+            ],
           ),
 
-          /*
-          TextField(
-            maxLength: 50,
-            keyboardType: TextInputType.datetime,
-            decoration: InputDecoration(label: Text("Date")),
-          ),*/
-          OutlinedButton(
-            onPressed: _selectDate,
-            child: selectedDate == null
-                ? const Text('Select Date')
-                : Text(formatter.format(selectedDate!)),
-          ),
-
+          SizedBox(height: 20),
           Center(
             child: Row(
               children: [
-                ElevatedButton(onPressed: () {}, child: Text("Cancel")),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Cancel"),
+                ),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () {
