@@ -1,4 +1,6 @@
+import 'package:expense_tracker/string_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
@@ -14,7 +16,7 @@ class _NewExpenseState extends State<NewExpense> {
   final formatter = DateFormat('MMMM d hh:mm a');
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-
+  Category selectedCategory = Category.food;
   DateTime? _selectedDate;
 
   @override
@@ -35,7 +37,6 @@ class _NewExpenseState extends State<NewExpense> {
     );
 
     if (pickedDate == null) {
-      print("date is null");
       return;
     }
 
@@ -45,7 +46,6 @@ class _NewExpenseState extends State<NewExpense> {
     );
 
     if (selectedTime == null) {
-      print("time is null");
       return;
     }
 
@@ -86,7 +86,9 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                 ),
               ),
+
               SizedBox(width: 16),
+
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -108,9 +110,27 @@ class _NewExpenseState extends State<NewExpense> {
           ),
 
           SizedBox(height: 20),
+
           Center(
             child: Row(
               children: [
+                DropdownButton(
+                  items: Category.values.map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(category.name.capitalize())
+                      )
+                    ).toList(),
+                    value: selectedCategory,
+                  onChanged: (value) {
+                    if (value == null) {
+                      return;
+                    }
+                    setState(() {
+                      selectedCategory = value;
+                    });
+                }),
+                Spacer(),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
