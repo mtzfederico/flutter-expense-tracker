@@ -33,13 +33,18 @@ class _NewExpenseState extends State<NewExpense> {
       lastDate: DateTime.now(),
     );
 
+    if (pickedDate == null) {
+      print("date is null");
+      return;
+    }
+
     final TimeOfDay? selectedTime = await showTimePicker(
       initialTime: TimeOfDay.now(),
       context: context,
     );
 
-    if (pickedDate == null || selectedTime == null) {
-      print("date or time is null");
+    if (selectedTime == null) {
+      print("time is null");
       return;
     }
 
