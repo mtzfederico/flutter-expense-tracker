@@ -15,22 +15,23 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
 
-  DateTime? selectedDate;
+  DateTime? _selectedDate;
 
   @override
   void dispose() {
     _titleController.dispose();
     _amountController.dispose();
-    selectedDate = null;
+    _selectedDate = null;
     super.dispose();
   }
 
-  Future<void> _selectDate() async {
-    final DateTime? pickedDate = await showDatePicker(
+  void _presentDatePicker() async {
+    final now = DateTime.now();
+    final pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: now,
       firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
+      lastDate: now,
     );
 
     if (pickedDate == null) {
@@ -49,7 +50,7 @@ class _NewExpenseState extends State<NewExpense> {
     }
 
     setState(() {
-      selectedDate = DateTime(
+      _selectedDate = DateTime(
         pickedDate.year,
         pickedDate.month,
         pickedDate.day,
@@ -92,22 +93,14 @@ class _NewExpenseState extends State<NewExpense> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      selectedDate == null
+                      _selectedDate == null
                           ? 'Select Date'
-                          : formatter.format(selectedDate!),
+                          : formatter.format(_selectedDate!),
                     ),
                     IconButton(
-                      onPressed: _selectDate,
+                      onPressed: _presentDatePicker,
                       icon: const Icon(Icons.calendar_month),
                     ),
-
-                    /*
-                    OutlinedButton(
-                      onPressed: _selectDate,
-                      child: selectedDate == null
-                          ? const Text('Select Date')
-                          : Text(formatter.format(selectedDate!)),
-                    ),*/
                   ],
                 ),
               ),
@@ -130,9 +123,9 @@ class _NewExpenseState extends State<NewExpense> {
                     print(_titleController.text);
                     print(_amountController.text);
                     print(
-                      selectedDate == null
+                      _NewExpenseState() == null
                           ? "Date is null"
-                          : selectedDate!.toIso8601String(),
+                          : _selectedDate!.toIso8601String(),
                     );
                   },
                   child: Text("Save Expense"),
