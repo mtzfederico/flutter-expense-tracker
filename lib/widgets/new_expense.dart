@@ -73,15 +73,10 @@ class _NewExpenseState extends State<NewExpense> {
       return;
     }
 
-    print(_titleController.text);
-    print(_amountController.text);
-    print(_selectedCategory);
-    print(_selectedDate!.toIso8601String());
-
     widget.saveExpense(
       Expense(
         title: _titleController.text,
-        amount: double.parse(_amountController.text),
+        amount: amount,
         date: _selectedDate!,
         category: _selectedCategory,
       ),
