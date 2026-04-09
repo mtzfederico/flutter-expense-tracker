@@ -14,7 +14,11 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
-    showModalBottomSheet(context: context, builder: (ctx) => NewExpense(saveExpense: addExpense));
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => NewExpense(saveExpense: addExpense),
+    );
   }
 
   void addExpense(Expense expense) {
@@ -23,10 +27,31 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  void removeExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.remove(expense);
+    });
+  }
+
   final List<Expense> _registeredExpenses = [
-    Expense(title: "Oat Late", amount: 7.36, date: DateTime.now(), category: Category.food),
-    Expense(title: "NYC Subway", amount: 3.00, date: DateTime.now(), category: Category.travel),
-    Expense(title: "Movie Ticket", amount: 18.00, date: DateTime.now(), category: Category.leisure),
+    Expense(
+      title: "Oat Late",
+      amount: 7.36,
+      date: DateTime.now(),
+      category: Category.food,
+    ),
+    Expense(
+      title: "NYC Subway",
+      amount: 3.00,
+      date: DateTime.now(),
+      category: Category.travel,
+    ),
+    Expense(
+      title: "Movie Ticket",
+      amount: 18.00,
+      date: DateTime.now(),
+      category: Category.leisure,
+    ),
   ];
 
   @override
@@ -38,16 +63,14 @@ class _ExpensesState extends State<Expenses> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: _openAddExpenseOverlay,
-          )
-          ],
+          ),
+        ],
       ),
       body: Column(
         children: [
           Text("CHART GOES HERE"),
           SizedBox(height: 30),
-          Expanded(
-            child: ExpensesList(expenses: _registeredExpenses)
-          ),
+          Expanded(child: ExpensesList(expenses: _registeredExpenses, removeExpense: removeExpense)),
         ],
       ),
     );
