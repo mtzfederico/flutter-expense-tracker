@@ -52,6 +52,11 @@ class _NewExpenseState extends State<NewExpense> {
       return;
     }
 
+    if (_amountController.text.trim().isEmpty) {
+      _presentErrorMessage("Invalid amount", "The Amount cannot be empty");
+      return;
+    }
+
     final amount = double.tryParse(_amountController.text);
     if (amount == null) {
       _presentErrorMessage("Invalid amount", "Input is not a number");
