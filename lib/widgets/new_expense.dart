@@ -28,6 +28,62 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+  void _presentErrorMessage(String title, String body) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title),
+        content: Text(body),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _submitExpenseData() {
+    if (_titleController.text.trim().isEmpty) {
+      _presentErrorMessage("Invalid title", "The title cannot be empty");
+      return;
+    }
+
+    final amount = double.tryParse(_amountController.text);
+    if (amount == null) {
+      _presentErrorMessage("Invalid amount", "Input is not a number");
+      return;
+    }
+
+    if (amount <= 0) {
+      _presentErrorMessage("Invalid amount", "Amount must be bigger than zero");
+      return;
+    }
+
+    if (_selectedDate == null) {
+      _presentErrorMessage("Invalid date", "No date selected");
+      return;
+    }
+
+    print(_titleController.text);
+    print(_amountController.text);
+    print(_selectedCategory);
+    print(_selectedDate!.toIso8601String());
+
+    widget.saveExpense(
+      Expense(
+        title: _titleController.text,
+        amount: double.parse(_amountController.text),
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+    Navigator.pop(context);
+  }
+
   void _presentDatePicker() async {
     final now = DateTime.now();
     final pickedDate = await showDatePicker(
@@ -116,13 +172,15 @@ class _NewExpenseState extends State<NewExpense> {
             child: Row(
               children: [
                 DropdownButton(
-                  items: Category.values.map(
-                    (category) => DropdownMenuItem(
-                      value: category,
-                      child: Text(category.name.capitalize())
+                  items: Category.values
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category.name.capitalize()),
+                        ),
                       )
-                    ).toList(),
-                    value: _selectedCategory,
+                      .toList(),
+                  value: _selectedCategory,
                   onChanged: (value) {
                     if (value == null) {
                       return;
@@ -130,7 +188,8 @@ class _NewExpenseState extends State<NewExpense> {
                     setState(() {
                       _selectedCategory = value;
                     });
-                }),
+                  },
+                ),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () {
@@ -140,21 +199,7 @@ class _NewExpenseState extends State<NewExpense> {
                 ),
                 Spacer(),
                 ElevatedButton(
-                  onPressed: () {
-                    print(_titleController.text);
-                    print(_amountController.text);
-                    print(_selectedCategory);
-                    print(
-                      _selectedDate == null
-                          ? "Date is null"
-                          : _selectedDate!.toIso8601String(),
-                    );
-                    if (_selectedDate == null) {
-                      return;
-                    }
-                    widget.saveExpense(Expense(title: _titleController.text, amount: double.parse(_amountController.text), date: _selectedDate!, category: _selectedCategory));
-                    Navigator.pop(context);
-                  },
+                  onPressed: _submitExpenseData,
                   child: Text("Save Expense"),
                 ),
               ],
