@@ -17,7 +17,7 @@ class _NewExpenseState extends State<NewExpense> {
   final formatter = DateFormat('MMMM d hh:mm a');
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  Category selectedCategory = Category.food;
+  Category _selectedCategory = Category.food;
   DateTime? _selectedDate;
 
   @override
@@ -122,13 +122,13 @@ class _NewExpenseState extends State<NewExpense> {
                       child: Text(category.name.capitalize())
                       )
                     ).toList(),
-                    value: selectedCategory,
+                    value: _selectedCategory,
                   onChanged: (value) {
                     if (value == null) {
                       return;
                     }
                     setState(() {
-                      selectedCategory = value;
+                      _selectedCategory = value;
                     });
                 }),
                 Spacer(),
@@ -143,7 +143,7 @@ class _NewExpenseState extends State<NewExpense> {
                   onPressed: () {
                     print(_titleController.text);
                     print(_amountController.text);
-                    print(selectedCategory);
+                    print(_selectedCategory);
                     print(
                       _selectedDate == null
                           ? "Date is null"
@@ -152,7 +152,7 @@ class _NewExpenseState extends State<NewExpense> {
                     if (_selectedDate == null) {
                       return;
                     }
-                    widget.saveExpense(Expense(title: _titleController.text, amount: double.parse(_amountController.text), date: _selectedDate!, category: selectedCategory));
+                    widget.saveExpense(Expense(title: _titleController.text, amount: double.parse(_amountController.text), date: _selectedDate!, category: _selectedCategory));
                     Navigator.pop(context);
                   },
                   child: Text("Save Expense"),
