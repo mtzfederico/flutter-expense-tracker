@@ -6,6 +6,7 @@ final ColorScheme kColorScheme = ColorScheme.fromSeed(
 );
 
 var kDarkColorScheme = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
   seedColor: Color.fromARGB(255, 5, 99, 125)
 
   );
