@@ -165,7 +165,7 @@ class _NewExpenseState extends State<NewExpense> {
                 ),
               ),
 
-              SizedBox(width: 16),
+              SizedBox(width: 14),
 
               Expanded(
                 child: Row(
