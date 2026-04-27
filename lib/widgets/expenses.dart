@@ -52,15 +52,15 @@ class _ExpensesState extends State<Expenses> {
 
   final List<Expense> _registeredExpenses = [
     Expense(
-      title: "Oat Late",
-      amount: 7.36,
-      date: DateTime.now(),
+      title: "Iced Latte",
+      amount: 6.25,
+      date: DateTime.now().subtract(Duration(hours: 4, minutes: 12)),
       category: Category.food,
     ),
     Expense(
       title: "NYC Subway",
       amount: 3.00,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(Duration(hours: 8, minutes: 25)),
       category: Category.travel,
     ),
     Expense(
