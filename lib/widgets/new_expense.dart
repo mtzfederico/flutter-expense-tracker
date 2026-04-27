@@ -157,6 +157,7 @@ class _NewExpenseState extends State<NewExpense> {
                   controller: _amountController,
                   maxLength: 10,
                   keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     prefixText: '\$',
                     label: Text("Amount"),
